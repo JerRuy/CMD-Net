@@ -1,6 +1,7 @@
 ## __CMDNet__ : CMD Net based on pytorch
 ### Introduction
 This project code based on python and pytorch framework, including data preprocessing, model training and testing, visualization, etc. This project is suitable for researchers who study CMD Net.  
+![image](https://github.com/JerRuy/CMD-Net/blob/main/img/pic.png)
 
 
 ### Requirements  
