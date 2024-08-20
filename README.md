@@ -153,14 +153,14 @@ Project
 
 ```
 ### Training model
-To train the model by DRIVE data, run the following command:
+To train the model, supported datasets include: CHASEDB, CRAG, DRIVE, and GlaS and supported models include: CMDNet_ConvUNeXt, CMDNet_DeepLab, CMDNet_FCN, CMDNet_FCNsa2, CMDNet_FCNsa, CMDNet_SegNet, CMDNet_UNet, ConvUNeXt, DeepLab, FCN, FCNsa, SegNet, UNet. run command as following :
 
 ```
 python main.py  --phase 'train' \
                 --input-size 448 \
                 --image-path './dataset/DRIVE' \
                 --model 'FCNsa' \
-                --save-path 'weights/1/' \
+                --save-path 'outcome/DRIVE/' \
                 --alpha 0.0001 \
                 --epoch 300 \
                 --batchsize 4 \
@@ -173,112 +173,17 @@ python main.py  --phase 'train' \
                 --epochloss_init 10000
 ```
 
-To train the model by CHASEDB data, run the following command:
-
-```
-python main.py  --phase 'train' \
-                --input-size 448 \
-                --image-path './dataset/CHASEDB1' \
-                --model 'FCNsa' \
-                --save-path 'weights/2/' \
-                --alpha 0.0001 \
-                --epoch 300 \
-                --batchsize 4 \
-                --n-channels 3 \
-                --n-classes 1 \
-                --lr 2e-4 \
-                --gpuid 0 \
-                --early-stop 20 \
-                --update-lr 10 \
-                --epochloss_init 10000
-```
-
-To train the model by CRAG data, run the following command:
-
-```
-python main.py  --phase 'train' \
-                --input-size 192 \
-                --image-path './dataset/CRAG' \
-                --model 'FCNsa' \
-                --save-path 'weights/3/' \
-                --alpha 0.0001 \
-                --epoch 300 \
-                --batchsize 4 \
-                --n-channels 3 \
-                --n-classes 2 \
-                --lr 2e-4 \
-                --gpuid 0 \
-                --early-stop 20 \
-                --update-lr 10 \
-                --epochloss_init 10000
-```
-To train the model by GlaS data, run the following command:
-
-```
-python main.py  --phase 'train' \
-                --input-size 192 \
-                --image-path './dataset/GlaS' \
-                --model 'FCNsa' \
-                --save-path 'weights/4/' \
-                --alpha 0.0001 \
-                --epoch 300 \
-                --batchsize 4 \
-                --n-channels 3 \
-                --n-classes 1 \
-                --lr 2e-4 \
-                --gpuid 0 \
-                --early-stop 20 \
-                --update-lr 10 \
-                --epochloss_init 10000
-```
 
 ### Testing model
-To test the model by DRIVE data, run the following command:
+To test the model, supported datasets include: CHASEDB, CRAG, DRIVE, and GlaS and supported models include: CMDNet_ConvUNeXt, CMDNet_DeepLab, CMDNet_FCN, CMDNet_FCNsa2, CMDNet_FCNsa, CMDNet_SegNet, CMDNet_UNet, ConvUNeXt, DeepLab, FCN, FCNsa, SegNet, UNet. run command as following :
 ```
 python main.py  --phase 'test'
-                --model-path './weights/1/CMD-Net_DRIVE.th' \
+                --model-path './outcome/DRIVE/CMD-Net_DRIVE.th' \
                 --test-path './dataset/DRIVE/test/images/' \
                 --gt-path './dataset/DRIVE/test/1st_manual' \
                 --model 'FCNsa' \
                 --n-channels 3 \
                 --n-classes 1 \
-                --gpuid 0
-
-```  
-
-To test the model by CHASEDB data, run the following command:
-```
-python main.py  --phase 'test' \
-                --model-path './weights/2/CMD-Net_CHASEDB.th' \
-                --test-path './dataset/CHASEDB1/test/images/' \
-                --gt-path './dataset/CHASEDB1/test/labels1' \
-                --model 'FCNsa' \
-                --n-channels 3 \
-                --n-classes 1 \
-                --gpuid 0
-
-```  
-To test the model by CRAG data, run the following command:
-```
-python main.py  --phase 'test' \
-                --model-path './weights/3/CMD-Net_CRAG.th' \
-                --test-path './dataset/CRAG/test/img/' \
-                --gt-path './dataset/CRAG/test/mask' \
-                --model 'FCNsa' \
-                --n-channels 3 \
-                --n-classes 2 \
-                --gpuid 0
-
-```  
-To test the model by GlaS data, run the following command:
-```
-python main.py  --phase 'test' \
-                --model-path './weights/4/CMD-Net_GlaS.th' \
-                --test-path './dataset/GlaS/test/img/' \
-                --gt-path './dataset/GlaS/test/mask' \
-                --model 'FCNsa' \
-                --n-channels 3 \
-                --n-classes 2 \
                 --gpuid 0
 
 ```  
