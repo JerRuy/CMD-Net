@@ -152,6 +152,25 @@ Project
             └── mask
 
 ```
+
+### Parameters
+Below is a description of the parameters and their default values:
+
+* --phase: Specifies the phase of operation. Options are train and test. Default is train.
+* --batch_size: The batch size for training. Default is 1.
+* --image_path: The size of the input images. Default is ./dataset/DRIVE.
+* --model: The name of model. Options are CMDNet_ConvUNeXt, CMDNet_DeepLab, CMDNet_FCN, CMDNet_FCNsa, CMDNet_SegNet, CMDNet_UNet, ConvUNeXt, DeepLab, FCN, FCNsa, SegNet, UNet. Default is  FCN.
+* --save-path: The directory where the train model checkpoints will be saved.
+* --epoch: The number of epochs for training. Default is 54000.
+* --n-channels: The numbers of channels.  Default is 3.
+* --n-classes: The numbers of classes.  Default is 2.
+* --lr: The learning rate for the optimizer. Default is 2e-4.
+* --gpuid: The id of gpu. Default is 0.
+* --early-stop: The early of stop. Default is 20.
+* --update-lr: The learning rate for update. Default is 10.
+* --epochloss_init: The epoch loss used to init. Default is 10000
+
+  
 ### Training model
 To train the model, supported datasets include: CHASEDB, CRAG, DRIVE, and GlaS and supported models include: CMDNet_ConvUNeXt, CMDNet_DeepLab, CMDNet_FCN, CMDNet_FCNsa2, CMDNet_FCNsa, CMDNet_SegNet, CMDNet_UNet, ConvUNeXt, DeepLab, FCN, FCNsa, SegNet, UNet. run command as following :
 
