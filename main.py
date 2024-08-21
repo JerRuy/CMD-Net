@@ -5,7 +5,6 @@ from Vessel_Segmentation.train import CMD_Net_Train
 from Vessel_Segmentation.test import CMD_Net_VS_Test
 from Gland_Segmentation.main import train as CMD_Net_GS_Train
 from Gland_Segmentation.main import CMD_Net_GS_Test
-from CRAG.main import crag_train
 from networks.UNet import UNet
 from networks.FCN import FCN
 from networks.FCNsa import FCNsa
