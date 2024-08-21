@@ -158,6 +158,7 @@ Below is a description of the parameters and their default values:
 
 * --phase: Specifies the phase of operation. Options are train and test. Default is train.
 * --batch_size: The batch size for training. Default is 1.
+* --dataset: The dataset of the input images. Options are CHASEDB, CRAG, DRIVE, and GlaS. Default is DRIVE.
 * --image_path: The size of the input images. Default is ./dataset/DRIVE.
 * --model: The name of model. Options are CMDNet_ConvUNeXt, CMDNet_DeepLab, CMDNet_FCN, CMDNet_FCNsa, CMDNet_SegNet, CMDNet_UNet, ConvUNeXt, DeepLab, FCN, FCNsa, SegNet, UNet. Default is  FCN.
 * --save-path: The directory where the train model checkpoints will be saved.
@@ -176,12 +177,12 @@ To train the model, supported datasets include: CHASEDB, CRAG, DRIVE, and GlaS a
 
 ```
 python main.py  --phase 'train' \
+                --dataset 'DRIVE' \
                 --input-size 448 \
-                --image-path './dataset/DRIVE' \
-                --model 'FCNsa' \
+                --model 'CMDNet_UNet' \
                 --save-path 'outcome/DRIVE/' \
                 --alpha 0.0001 \
-                --epoch 300 \
+                --epoch 45000 \
                 --batchsize 4 \
                 --n-channels 3 \
                 --n-classes 1 \
@@ -196,13 +197,15 @@ python main.py  --phase 'train' \
 ### Testing model
 To test the model, supported datasets include: CHASEDB, CRAG, DRIVE, and GlaS and supported models include: CMDNet_ConvUNeXt, CMDNet_DeepLab, CMDNet_FCN, CMDNet_FCNsa2, CMDNet_FCNsa, CMDNet_SegNet, CMDNet_UNet, ConvUNeXt, DeepLab, FCN, FCNsa, SegNet, UNet. run command as following :
 ```
-python main.py  --phase 'test'
+python main.py  --phase 'test'  \
+                --dataset 'DRIVE' \
+                --input-size 448  \
+                --model 'CMDNet_UNet' \
                 --model-path './outcome/DRIVE/CMD-Net_DRIVE.th' \
-                --test-path './dataset/DRIVE/test/images/' \
-                --gt-path './dataset/DRIVE/test/1st_manual' \
-                --model 'FCNsa' \
+                --alpha 0.0001 \
+                --batchsize 4 \
                 --n-channels 3 \
                 --n-classes 1 \
-                --gpuid 0
+                --gpuid 0 
 
 ```  
