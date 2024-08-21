@@ -4,7 +4,7 @@ Multi-scale dense connection has been widely used in the biomedical image commun
 ![image](https://github.com/JerRuy/CMD-Net/blob/main/img/pic.png)
 
 
-### Requirements  
+### Prerequisites  
 The main package and version of the python environment are as follows
 ```
 # Name                    Version         
@@ -22,8 +22,7 @@ pillow                    10.4.0
 The above environment is successful when running the code of the project. 
 __It is recommended that you use Linux for training and testing__
 
-## Usage 
-### Project Structure
+## Project Structure 
 
 The project structure are as follows : 
 ```
@@ -153,7 +152,7 @@ Project
 
 ```
 
-### Parameters
+### Usage
 Below is a description of the parameters and their default values:
 
 * --phase: Specifies the phase of operation. Options are train and test. Default is train.
@@ -173,7 +172,7 @@ Below is a description of the parameters and their default values:
 
   
 ### Training model
-To train the model, supported datasets include: CHASEDB, CRAG, DRIVE, and GlaS and supported models include: CMDNet_ConvUNeXt, CMDNet_DeepLab, CMDNet_FCN, CMDNet_FCNsa2, CMDNet_FCNsa, CMDNet_SegNet, CMDNet_UNet, ConvUNeXt, DeepLab, FCN, FCNsa, SegNet, UNet. run command as following :
+To train the model CMDNet_UNet on dataset DRIVE, run command as following :
 
 ```
 python main.py  --phase 'train' \
@@ -192,10 +191,11 @@ python main.py  --phase 'train' \
                 --update-lr 10 \
                 --epochloss_init 10000
 ```
-
+* dataset: CHASEDB, CRAG, DRIVE, and GlaS.
+* model:  CMDNet_ConvUNeXt, CMDNet_DeepLab, CMDNet_FCN, CMDNet_FCNsa2, CMDNet_FCNsa, CMDNet_SegNet, CMDNet_UNet, ConvUNeXt, DeepLab, FCN, FCNsa, SegNet, UNet.
 
 ### Testing model
-To test the model, supported datasets include: CHASEDB, CRAG, DRIVE, and GlaS and supported models include: CMDNet_ConvUNeXt, CMDNet_DeepLab, CMDNet_FCN, CMDNet_FCNsa2, CMDNet_FCNsa, CMDNet_SegNet, CMDNet_UNet, ConvUNeXt, DeepLab, FCN, FCNsa, SegNet, UNet. run command as following :
+To test the model CMDNet_UNet on dataset DRIVE. run command as following :
 ```
 python main.py  --phase 'test'  \
                 --dataset 'DRIVE' \
