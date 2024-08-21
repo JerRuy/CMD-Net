@@ -1,10 +1,10 @@
-## Constrained Multi-scale Dense Connections for Biomedical Image Segmentation
-### Introduction
+# Constrained Multi-scale Dense Connections for Biomedical Image Segmentation
+## Introduction
 Multi-scale dense connection has been widely used in the biomedical image community to enhance the segmentation performance. In this way, features from all or most scales are aggregated or iteratively fused. However, by analyzing the details, we discover that some connections involving distant scales may not contribute to, or even harm, the performance, while they always introduce a noticeable increase in computational cost. In this paper, we propose constrained multi-scale dense connections (CMDC) for biomedical image segmentation. In contrast to current general lightweight approaches, we first introduce two methods, a naive method and a network architecture search (NAS)-based method, toremove redundant connections and verify the optimal connection configuration, thereby improving overall efficiency and accuracy. The results demonstrate that the two approaches obtain a similar optimal configuration in which most features at the adjacent scales are connected. Then, we applied the optimal configuration to various backbone networks to build constrained multi-scale dense networks (CMD-Net). Experimental results evaluated on eight image segmentation datasets covering biomedical images and natural images demonstrate the effectiveness of CMD-Net across a variety of backbone networks (FCN, U-Net, DeepLabV3, SegNet, FCNsa, ConvUNeXt) with a much lower increase in computational cost. Furthermore, CMD-Net achieves state-of-the-art performance on four publicly available datasets. We believe that the CMDC method can offer valuable insight for ways to engage in dense connectivity at multiple scales within communities.
 ![image](https://github.com/JerRuy/CMD-Net/blob/main/img/pic.png)
 
 
-### Prerequisites  
+## Prerequisites  
 The main package and version of the python environment are as follows
 ```
 # Name                    Version         
