@@ -1,21 +1,5 @@
 import numpy as np
 
-
-#function  Combinations(com_m,com_n,last,cur,i)
-#  if (i==com_n+1) then
-#    table.insert(coms,cur:clone())
-#   return
-#  end
-#  for idx = last+1, com_m do
-#    cur[i] = idx
-#    Combinations(com_m,com_n,idx,cur,i+1)
-#  end
-#end
-#Combinations(com_m,com_n,0,torch.DoubleTensor(com_n),1)
-
-
-
-
 pbatch = 8
 com_m = pbatch*2
 com_n = pbatch
@@ -35,9 +19,6 @@ def combination(com_m, com_n, last, cur, i):
         global cnt
         temp[cnt] =  cur
         coms.append(temp[cnt])
-        #coms.insert(len(coms),cur)
-        #print(cur)    
-        #print(coms[0])
         cnt = cnt + 1
         
         return 

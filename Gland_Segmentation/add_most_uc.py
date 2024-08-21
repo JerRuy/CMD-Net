@@ -55,43 +55,26 @@ def add_most_uc(iterr, net, new_train_files, pbatch, pcount, used_pixels, all_fe
         besty = 0
         bestid = 1
         bestusedp = 0 
-        #bestinfo = 0
         for idt in range(num_train):
 
             imgT = uc_map[idt]
             (w,h) = imgT.shape[:2]
-            #print(imgT ) 
-            #print('############################num_train:' + str(idt))
-            #print(np.shape(imgT))
-            #print(np.shape(imgT))
             scale = 4
             for ii in range(int((w - ins)/scale)):
                 for  jj in range(int((h - ins)/scale)):
-                    
-                    #print(str(ii),str(jj))
-                    
+                                        
                     i = int(scale*ii)
                     j = int(scale*jj)
                     
                     tempv = np.sum( imgT[i:i+ins, j:j+ins] )  
                     
-                    #print(tempv)
-                    #print(imgT )   
-                    #print(imgT[i:i+ins, j:j+ins] )
-                    #print(np.shape(imgT[i:i+ins, j:j+ins] ))
                     
                     if tempv > maxv:
-                        #print(np.shape(imgT ))
-                        #print(str(i),str(j))
-                        #print('OK')
-                        #bestinfo = tempinfo
                         maxv = tempv
                         bestusedp = np.sum(  pcount[idt][i:i+ins, j:j+ins]  )
                         bestid = idt+1
                         bestx = i
                         besty = j
-        
-        
         
         i_dex = np.zeros(3).astype(int)
   
@@ -99,35 +82,28 @@ def add_most_uc(iterr, net, new_train_files, pbatch, pcount, used_pixels, all_fe
         i_dex[1] = int(bestx)
         i_dex[2] = int(besty)
       
-        #print((i_dex[0] + ins).dtype)
         print('imageid:'+ str(i_dex[0]) + 'image_ij:' + str(i_dex[1]) + '_' +  str(i_dex[2])+ '    maxv:' + str(maxv) + '    usedpixel:' + str(bestusedp) )
         
         corr = np.zeros([ins,ins])        
         corr_imgT = uc_map[i_dex[0]-1]
-        #print(corr_imgT)
         corr_imgT[i_dex[1]: i_dex[1]+ins, i_dex[2]: i_dex[2]+ins] = corr
-        #print(corr_imgT)
         uc_map[i_dex[0]-1] = corr_imgT 
               
         candidates.append(i_dex)
     
         idC = 'train_' + str(i_dex[0]) + ext
         nameC = train_image_path + idC
-        #print(nameT)
         imgC = cv2.imread(nameC, cv2.IMREAD_COLOR)
         temp_imgC = imgC[i_dex[1]: i_dex[1]+ins, i_dex[2]: i_dex[2]+ins]
         temp_imgC = temp_imgC.transpose(2, 0, 1).astype(np.float64)
         
         for i in range(batch_size):
-            image_batch[i,:,:,:] = temp_imgC
-        
+            image_batch[i,:,:,:] = temp_imgC        
         
         image_batch_t = torch.from_numpy(image_batch).float().cuda()        
         pred, xh = net(image_batch_t)        
         cand_f.append(xh.data.cpu().numpy())
 
-
-    
     sim_m = np.zeros([len(cand_f), len(all_features)])
         
     for i1 in range(len(cand_f)):        
@@ -147,7 +123,6 @@ def add_most_uc(iterr, net, new_train_files, pbatch, pcount, used_pixels, all_fe
                 if sim_m[  int(coms[i][j1])  ][i1] > max_sim :                    
                     max_sim = sim_m[  int(coms[i][j1])  ][i1]                                        
             cur_score = cur_score + max_sim * all_info[i1]   
-            #print(all_info[i1])
         
         if cur_score > max_score:            
             max_score = cur_score
@@ -155,8 +130,6 @@ def add_most_uc(iterr, net, new_train_files, pbatch, pcount, used_pixels, all_fe
            
     print(max_score)
     print(max_solu)
-    
-    
             
     for ip in range(pbatch):    
         i_des = candidates[int(max_solu[ip])]
@@ -173,11 +146,6 @@ def add_most_uc(iterr, net, new_train_files, pbatch, pcount, used_pixels, all_fe
         #print(np.sum(pc),used_pixels)
         pcount[i_des[0] - 1 ][int(i_des[1]): int(i_des[1]+ins), int(i_des[2]): int(i_des[2]+ins)] = np.zeros([ins,ins])
         
-
-
-
-
-
         train_image_path=img_path + '/train/img/'
         train_label_path=img_path +  '/train/mask/'
         
@@ -207,30 +175,3 @@ def add_most_uc(iterr, net, new_train_files, pbatch, pcount, used_pixels, all_fe
         print('data load succesful') 
     return new_train_files, pcount, used_pixels
     
-     
-if __name__ == '__main__':
-
-
-    c = []
-    c.append([1,2,3])
-    c.append([21,22,3])
-    c.append([31,2,35])
-    c.append([41,2,3])
-    c.append([26,22,3])
-    c.append([51,2,35])    
-    c.append([14,2,3])
-    c.append([27,22,3])
-
-
-    new_train_files = add_most_uc(c,8)   
-    
-    
-    add_most_uc(iterr, net, new_train_files, pbatch, pcount, used_pixels, all_features, all_info, totalp, all_train )
-    #print(len(new_train_files))
-    
-    
-    
-    
-    
-    
-       

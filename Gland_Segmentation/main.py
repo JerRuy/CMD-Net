@@ -25,12 +25,6 @@ from Gland_Segmentation.weight import initialize_weights
 from Gland_Segmentation.eval_train import eval_train
 from Gland_Segmentation.eval_test import eval_test
 
-# sys.path.append("..")
-# from networks.CMDNet_FCN import CMDNet_FCN as UNet_combination_o_f
-
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-
-
 
 
 def train(net, batch_size, imageType, ins, lr, max_iter, img_path, record):
@@ -40,9 +34,9 @@ def train(net, batch_size, imageType, ins, lr, max_iter, img_path, record):
     new_train_files = []
     meanerr = np.ones([100])
 
-    addpoint_iter = 100
-    checkpoint_iter = 100
-    uc_th = 200
+    addpoint_iter = 1000
+    checkpoint_iter = 1000
+    uc_th = 2000
     p_batch = 8
 
     pcount, totalp, num_train, ext = pixelcount(img_path, ins)
@@ -158,31 +152,10 @@ def train(net, batch_size, imageType, ins, lr, max_iter, img_path, record):
                 param_group['lr'] = lr * 0.1 
             cur_lr =  param_group['lr']   
 
-def CMD_Net_GS_Test(net, model_path, test_path, record_path, ins):
-    checkpoint = torch.load(model_path, map_location=lambda storage, loc: storage.cuda(0))
+def CMD_Net_GS_Test(net, model_path, test_path, record_path, ins, gpuid):
+    checkpoint = torch.load(model_path, map_location=lambda storage, loc: storage.cuda(gpuid))
     net.load_state_dict(checkpoint['model_state'])
     print('succesful loaded')
     eval_test(0,net, test_path, record_path, ins)
 
-# if __name__ == '__main__':
-#     parser = ArgumentParser(description="Evaluation script for CMD-Net models",formatter_class=ArgumentDefaultsHelpFormatter)
-#     parser.add_argument('--input-size', default=192, type=int, help='Images input size')
-#     parser.add_argument('--image-path', default='./dataset/DRIVE', type=str, help='DIRVE dataset path')
-#     parser.add_argument('--model', default='FCNsa', type=str, help='train model')
-#     parser.add_argument('--save-path', default='../outcome/GlaS/record', type=str, help='store the trained model')
-#     parser.add_argument('--alpha', default=0.0001, type=float, help='the empirical coefficient for diversity')
-#     parser.add_argument('--epoch', default=3000, type=int, help='')
-#     parser.add_argument('--batchsize', default=4, type=int, help='Batch per GPU')
-#     parser.add_argument('--n-channels', default=3, type=int, help='n channels')
-#     parser.add_argument('--n-classes', default=2, type=int, help='classes')
-#     parser.add_argument('--lr', default=0.0005, type=float, help='learning rate')
-#     parser.add_argument('--gpuid', default=0, type=int, help='GPU id')
-#     parser.add_argument('--early-stop', default=20, type=int, help=' ')
-#     parser.add_argument('--update-lr', default=10, type=int, help=' ')
-#     parser.add_argument('--epochloss_init', default=10000, type=int, help=' ')
-#     args = parser.parse_args()
 
-#     net = UNet_combination_o_f(args.n_channels, args.n_classes)
-#     net = net.cuda()
-    
-#     train(net, args.batchsize, args.n_channels, args.input_size, args.lr, args.epoch, args.save_path)

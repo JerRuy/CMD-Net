@@ -32,10 +32,6 @@ def pixelcount(img_path, ins):
       
         totalp = totalp + np.sum(temp_count) 
       
-
-    
-    #print(i_dex)
-    #print(stx,sty)
     return pcount, totalp, num_train, ext
     
 
@@ -55,24 +51,3 @@ def pcountdis(num_train, pcount,totalp, used_pixels, ins):
     print(totalp - temp_pixelcount)
     print(used_pixels)  
 
-
-
-
-
-      
-      
-if __name__ == '__main__':
-
-
-    num_train = 85
-    pcount = pixelcount()  
-    
-    print(pcount[0]) 
-    
-    
-    for i_idx in range(num_train):   
-         
-        print(i_idx+1,np.shape(pcount[i_idx]))  
-      
-      
-      

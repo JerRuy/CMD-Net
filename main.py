@@ -14,7 +14,6 @@ from networks.SegNet import SegNet
 from networks.ConvUNeXt import ConvUNeXt
 from networks.CMDNet_FCN import CMDNet_FCN
 from networks.CMDNet_FCNsa import CMDNet_FCNsa
-from networks.CMDNet_FCNsa2 import CMDNet_FCNsa as CMDNet_FCNsa2
 from networks.CMDNet_UNet import CMDNet_UNet
 from networks.CMDNet_SegNet import CMDNet_SegNet
 from networks.CMDNet_ConvUNeXt import CMDNet_ConvUNeXt
@@ -68,14 +67,13 @@ if __name__ == '__main__':
         if args.dataset == 'DRIVE':
             test_path = "./dataset/DRIVE/test/images/"
             gt_path = "./dataset/DRIVE/test/1st_manual"
-        elif args.dataset == 'CRAG':
-            test_path = "./dataset/CHASEDB1/test/images/"
-            gt_path = "./dataset/CHASEDB1/test/labels1"
         elif args.dataset == 'CHASEDB':
             test_path = "./dataset/CHASEDB1/test/images/"
             gt_path = "./dataset/CHASEDB1/test/labels1"
+        elif args.dataset == 'CRAG':
+            test_path = "./dataset/CRAG/"
         elif args.dataset == 'GlaS':
-            test_path = "./dataset/GlaS" 
+            test_path = "./dataset/GlaS/" 
         else:
             print("please assign the dataset.")
             sys.exit()
@@ -97,8 +95,6 @@ if __name__ == '__main__':
         net = CMDNet_FCN(n_channels = args.n_channels, n_classes = args.n_classes).cuda()
     elif (args.model == 'CMDNet_FCNsa'):
         net = CMDNet_FCNsa(n_channels = args.n_channels, n_classes = args.n_classes).cuda()
-    elif (args.model == 'CMDNet_FCNsa2'):
-        net = CMDNet_FCNsa2(n_channels = args.n_channels, n_classes = args.n_classes).cuda()
     elif (args.model == 'CMDNet_UNet'):
         net = CMDNet_UNet(n_channels = args.n_channels, n_classes = args.n_classes).cuda()
     elif (args.model == 'CMDNet_SegNet'):
@@ -121,6 +117,6 @@ if __name__ == '__main__':
         if  "DRIVE" in test_path or "CHASE" in test_path:
             CMD_Net_VS_Test(net, args.model_path, test_path, gt_path, args.gpuid)
         else:
-            CMD_Net_GS_Test(net, args.model_path, args.test_path, args.save_path, args.input_size)
+            CMD_Net_GS_Test(net, args.model_path, test_path, args.save_path, args.input_size, args.gpuid)
     else:
         print("input phase error.")

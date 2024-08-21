@@ -4,7 +4,6 @@ import math
 import torch
 import torch.nn.functional as F
 import torch.nn as nn
-# from network.unet_combination_o import UNet_combination_o_f
 import os
 import shutil
 import sys
@@ -16,24 +15,6 @@ def softmax02(x):
     x = x * 0.2
     return x
 
-def softmax03(x11,x12,x21,x22,x31,x32,x41,x42,x51,x52):
-    xx11 = softmax02(x11)
-    xx21 = softmax02(x21)
-    xx31 = softmax02(x31)
-    xx41 = softmax02(x41)
-    xx51 = softmax02(x51)
-
-    xx12 = softmax02(x12)
-    xx22 = softmax02(x22)
-    xx32 = softmax02(x32)
-    xx42 = softmax02(x42)
-    xx52 = softmax02(x52)
-        
-    return xx11,xx12,xx21,xx22,xx31,xx32,xx41,xx42,xx51,xx52
-    
-    
-    
-    
     
 def  rotate02(temp_train, batch_size, image_batch, net):
     
@@ -47,11 +28,6 @@ def  rotate02(temp_train, batch_size, image_batch, net):
     image_batch_t = torch.from_numpy(image_batch).float().cuda()
     pred, _ = net(image_batch_t)
     return softmax02(pred)
-    
-    
-    
-    
-    
     
     
 def mkdir(path): 
@@ -131,7 +107,6 @@ def eval_test(iterr, net, test_dir, record, ins):
                             insj = hh - ins
                             insdj = hh
                         
-                        
                         print(insi,insj,insdi,insdj)
                             
                         
@@ -141,18 +116,15 @@ def eval_test(iterr, net, test_dir, record, ins):
                         M1 = cv2.getRotationMatrix2D(center,90*1,1)
                         M2 = cv2.getRotationMatrix2D(center,90*2,1)
                         M3 = cv2.getRotationMatrix2D(center,90*3,1)
-                        #M4 = cv2.getRotationMatrix2D(center,90*4,1)
                         
                         MM1 = cv2.getRotationMatrix2D(center,-90*1,1)
                         MM2 = cv2.getRotationMatrix2D(center,-90*2,1)
                         MM3 = cv2.getRotationMatrix2D(center,-90*3,1)
-                        #MM4 = cv2.getRotationMatrix2D(center,90*4,1)
                         
                         
                         temp_train1 = cv2.warpAffine(temp_train,M1,(ins,ins))
                         temp_train2 = cv2.warpAffine(temp_train,M2,(ins,ins))
-                        temp_train3 = cv2.warpAffine(temp_train,M3,(ins,ins))
-                        #temp_train4 = cv2.warpAffine(temp_train,M4,(ins,ins))            
+                        temp_train3 = cv2.warpAffine(temp_train,M3,(ins,ins))         
                         temp_train4 = temp_train
                         
                         temp_pred_s1 = rotate02(temp_train1,  batch_size,  image_batch, net)         
@@ -166,37 +138,18 @@ def eval_test(iterr, net, test_dir, record, ins):
                         temp_pred_s2 = cv2.warpAffine(temp_pred_s2[0,1,:,:].cpu().detach().numpy(),MM2,(ins,ins))
                         results.append(temp_pred_s2)
                         temp_pred_s3 = cv2.warpAffine(temp_pred_s3[0,1,:,:].cpu().detach().numpy(),MM3,(ins,ins))
-                        results.append(temp_pred_s3)
-
-                        #temp_pred_s5 = temp_pred_s4[0,0,:,:]
-                        #temp_pred_b5 = temp_pred_b4[0,0,:,:]
-                        
+                        results.append(temp_pred_s3)                        
                         
                         temp_pred_s4 = temp_pred_s4[0,1,:,:].cpu().detach().numpy()
-                        results.append(temp_pred_s4)
-                        #temp_pred_s4 = cv2.warpAffine(temp_pred_s4[0,1,:,:],MM4,(ins,ins))
-                        #temp_pred_b4 = cv2.warpAffine(temp_pred_b4[0,1,:,:],MM4,(ins,ins))
+                        results.append(temp_pred_s4)                        
 
-                        
-                        #print(temp_pred_b4.min())
-                        #print(temp_pred_b5.max())
-                                                        
-                        #temp_pred_s = temp_pred_s4
-                        #temp_pred_b = temp_pred_b4 
-
-                        temp_pred_s = np.mean(results, axis=0)
-                        #temp_pred_s = (temp_pred_s4 + temp_pred_s4 + temp_pred_s4 + temp_pred_s4 )
-                        #temp_pred_b = (temp_pred_b4 + temp_pred_b4 + temp_pred_b4 + temp_pred_b4 )
-                        #print(temp_pred_s4.max())
-                        ##print(temp_pred_s.max())                       
+                        temp_pred_s = np.mean(results, axis=0) 
                         
                         big_pred_s[insi:insdi,insj:insdj] = big_pred_s[insi:insdi,insj:insdj] + temp_pred_s * weight
                         big_weight[insi:insdi,insj:insdj] = big_weight[insi:insdi,insj:insdj] + weight
 
                 
-                final_pred_s = big_pred_s / big_weight 
-                        
-                final_pred_s = final_pred_s *255
-                
+                final_pred_s = big_pred_s / big_weight                         
+                final_pred_s = final_pred_s *255                
 
                 cv2.imwrite(record + '/test/' + 'iter' + str(iterr) + '/c1_' + idA  , final_pred_s )
