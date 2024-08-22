@@ -13,7 +13,7 @@ import torch.utils.data as data
 from torch.autograd import Variable as V
 from scripts.loss import  *
 from scripts.data import ImageFolder
-from scripts.quant import *
+# from scripts.quant import *
 
 
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
@@ -100,59 +100,4 @@ def loadweight(net, path):
         model_dict[name] = v
     net.load_state_dict(model_dict)
     return net
-
-
-# if __name__ == '__main__':
-#     print(torch.__version__)
-
-#     parser = ArgumentParser(description="Evaluation script for CMD-Net models",formatter_class=ArgumentDefaultsHelpFormatter)
-
-#     parser.add_argument('--input-size', default=448, type=int, help='Images input size')
-#     parser.add_argument('--image-path', default='./dataset/DRIVE', type=str, help='DIRVE dataset path')
-#     parser.add_argument('--model', default='FCNsa', type=str, help='train model')
-#     parser.add_argument('--save-path', default='weights/1/', type=str, help='store the trained model')
-#     parser.add_argument('--alpha', default=0.0001, type=float, help='the empirical coefficient for diversity')
-#     parser.add_argument('--epoch', default=300, type=int, help='')
-#     parser.add_argument('--batchsize', default=4, type=int, help='Batch per GPU')
-#     parser.add_argument('--n-channels', default=3, type=int, help='n channels')
-#     parser.add_argument('--n-classes', default=1, type=int, help='classes')
-#     parser.add_argument('--lr', default=2e-4, type=float, help='learning rate')
-#     parser.add_argument('--gpuid', default=0, type=int, help='GPU id')
-#     parser.add_argument('--early-stop', default=20, type=int, help=' ')
-#     parser.add_argument('--update-lr', default=10, type=int, help=' ')
-#     parser.add_argument('--epochloss_init', default=10000, type=int, help=' ')
-
-#     args = parser.parse_args()
-
-#     os.environ['CUDA_VISIBLE_DEVICES'] = str(args.gpuid)
-
-#     if (args.model == 'FCN'):
-#         net = FCN(in_channels = args.n_channels, n_classes = args.n_classes).cuda()
-#     elif (args.model == 'UNet'):
-#         net = UNet(in_channels = args.n_channels, n_classes = args.n_classes).cuda()
-#     elif (args.model == 'FCNsa'):
-#         net = FCNsa(n_channels = args.n_channels, n_classes = args.n_classes).cuda()
-#     elif (args.model == 'DeepLab'):
-#         net = DeepLabV3(in_channels = args.n_channels, n_classes = args.n_classes).cuda()
-#     elif (args.model == 'SegNet'):
-#         net = SegNet(in_channels = args.n_channels, n_classes = args.n_classes).cuda()
-#     elif (args.model == 'ConvUNeXt'):
-#         net = ConvUNeXt(in_channels = args.n_channels, num_classes = args.n_classes).cuda()
-#     elif (args.model == 'CMDNet_FCN'):
-#         net = CMDNet_FCN(n_channels = args.n_channels, n_classes = args.n_classes).cuda()
-#     elif (args.model == 'CMDNet_FCNsa'):
-#         net = CMDNet_FCNsa(n_channels = args.n_channels, n_classes = args.n_classes).cuda()
-#     elif (args.model == 'CMDNet_UNet'):
-#         net = CMDNet_UNet(n_channels = args.n_channels, n_classes = args.n_classes).cuda()
-#     elif (args.model == 'CMDNet_SegNet'):
-#         net = CMDNet_SegNet(in_channels = args.n_channels, n_classes = args.n_classes).cuda()
-#     elif (args.model == 'CMDNet_DeepLab'):
-#         net = CMDNet_DeepLab(in_channels = args.n_channels, n_classes = args.n_classes).cuda()
-#     elif (args.model == 'CMDNet_ConvUNeXt'):
-#         net = CMDNet_ConvUNeXt(in_channels = args.n_channels, num_classes = args.n_classes).cuda()
-#     else:
-#         print("the model name must be in CMDNet_FCN, CMDNet_FCNsa, CMDNet_UNet, CMDNet_ConvUNeXt.")
-
-
-#     net = CMD_Net_Train(net, [], [],  args.input_size,  args.image_path,  args.save_path, args.alpha, args.epoch, args.batchsize, args.lr,  args.early_stop, args.update_lr, args.epochloss_init )
 

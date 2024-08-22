@@ -1,6 +1,3 @@
-"""
-Based on https://github.com/asanakoy/kaggle_carvana_segmentation
-"""
 import torch
 import torch.utils.data as data
 from torch.autograd import Variable as V
@@ -89,44 +86,6 @@ def randomRotate90(image, mask, u=0.5):
         mask=np.rot90(mask)
 
     return image, mask
-
-
-def default_loader(img_path, mask_path):
-
-    img = cv2.imread(img_path)
-    # print("img:{}".format(np.shape(img)))
-    img = cv2.resize(img, (448, 448))
-
-    mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
-
-    mask = 255. - cv2.resize(mask, (448, 448))
-    
-    img = randomHueSaturationValue(img,
-                                   hue_shift_limit=(-30, 30),
-                                   sat_shift_limit=(-5, 5),
-                                   val_shift_limit=(-15, 15))
-
-    img, mask = randomShiftScaleRotate(img, mask,
-                                       shift_limit=(-0.1, 0.1),
-                                       scale_limit=(-0.1, 0.1),
-                                       aspect_limit=(-0.1, 0.1),
-                                       rotate_limit=(-0, 0))
-    img, mask = randomHorizontalFlip(img, mask)
-    img, mask = randomVerticleFlip(img, mask)
-    img, mask = randomRotate90(img, mask)
-    
-    mask = np.expand_dims(mask, axis=2)
-    #
-    # print(np.shape(img))
-    # print(np.shape(mask))
-
-    img = np.array(img, np.float32).transpose(2,0,1)/255.0 * 3.2 - 1.6
-    mask = np.array(mask, np.float32).transpose(2,0,1)/255.0
-    mask[mask >= 0.5] = 1
-    mask[mask <= 0.5] = 0
-    #mask = abs(mask-1)
-    return img, mask
-
 
 def default_DRIVE_loader(img_path, mask_path):
     img = cv2.imread(img_path)
@@ -280,93 +239,6 @@ def read_DRIVE_datasets1(root_path, mode='train'):
     return images, masks
 
 
-def read_Messidor_datasets(root_path, mode='train'):
-    images = []
-    masks = []
-
-    if mode == 'train':
-        read_files = os.path.join(root_path, 'train.txt')
-    else:
-        read_files = os.path.join(root_path, 'test.txt')
-
-    image_root = os.path.join(root_path, 'save_image')
-    gt_root = os.path.join(root_path, 'save_mask')
-
-    for image_name in open(read_files):
-        image_path = os.path.join(image_root, image_name.split('.')[0] + '.png')
-        label_path = os.path.join(gt_root, image_name.split('.')[0] + '.png')
-
-        images.append(image_path)
-        masks.append(label_path)
-
-    return images, masks
-
-def read_RIM_ONE_datasets(root_path, mode='train'):
-    images = []
-    masks = []
-
-    if mode == 'train':
-        read_files = os.path.join(root_path, 'train_files.txt')
-    else:
-        read_files = os.path.join(root_path, 'test_files.txt')
-
-    image_root = os.path.join(root_path, 'RIM-ONE-images')
-    gt_root = os.path.join(root_path, 'RIM-ONE-exp1')
-
-    for image_name in open(read_files):
-        image_path = os.path.join(image_root, image_name.split('.')[0] + '.png')
-        label_path = os.path.join(gt_root, image_name.split('.')[0] + '-exp1.png')
-
-        images.append(image_path)
-        masks.append(label_path)
-
-    return images, masks
-
-
-
-
-
-def read_Cell_datasets(root_path, mode='train'):
-    images = []
-    masks = []
-
-    image_root = os.path.join(root_path, 'train-images')
-    gt_root = os.path.join(root_path, 'train-labels')
-
-
-    for image_name in os.listdir(image_root):
-        image_path = os.path.join(image_root, image_name)
-        label_path = os.path.join(gt_root, image_name)
-
-        images.append(image_path)
-        masks.append(label_path)
-
-    print(images, masks)
-
-    return images, masks
-
-
-def read_datasets_vessel(root_path, mode='train'):
-    images = []
-    masks = []
-
-    image_root = os.path.join(root_path, 'training/images')
-    gt_root = os.path.join(root_path, 'training/mask')
-
-    for image_name in os.listdir(image_root):
-        image_path = os.path.join(image_root, image_name)
-        label_path = os.path.join(gt_root, image_name)
-
-        if cv2.imread(image_path) is not None:
-
-            if os.path.exists(image_path) and os.path.exists(label_path):
-
-                images.append(image_path)
-                masks.append(label_path)
-
-    print(images[:10], masks[:10])
-
-    return images, masks
 
 
 class ImageFolder(data.Dataset):
@@ -374,7 +246,7 @@ class ImageFolder(data.Dataset):
     def __init__(self,root_path, datasets='Messidor',  mode='train'):
         self.root = root_path
         self.mode = mode
-        support_datas = ['RIM-ONE', 'Messidor', 'CHASEDB1', 'DRIVE', 'DRIVE1', 'CRAG', 'GlaS','Cell', 'Vessel']
+        support_datas = ['CHASEDB1', 'DRIVE', 'DRIVE1', 'CRAG', 'GlaS']
         if datasets == '':
             print(os.path.basename(root_path))
             datas = [data for data in support_datas if os.path.basename(root_path) == data]
@@ -385,11 +257,7 @@ class ImageFolder(data.Dataset):
         else:
             self.dataset = datasets
         assert self.dataset in support_datas, "the dataset should be in 'Messidor', 'ORIGA', 'RIM-ONE', 'Vessel' "
-        if self.dataset == 'RIM-ONE':
-            self.images, self.labels = read_RIM_ONE_datasets(self.root, self.mode)
-        elif self.dataset == 'Messidor':
-            self.images, self.labels = read_Messidor_datasets(self.root, self.mode)
-        elif self.dataset == 'CHASEDB1':
+        if self.dataset == 'CHASEDB1':
             self.images, self.labels = read_CHASEDB1_datasets(self.root, self.mode)
         elif self.dataset == 'CRAG':
             self.images, self.labels = read_CRAG_datasets(self.root, self.mode)
@@ -398,14 +266,10 @@ class ImageFolder(data.Dataset):
         elif self.dataset == 'DRIVE':
             self.images, self.labels = read_DRIVE_datasets(self.root, self.mode)
         elif self.dataset == 'DRIVE1':
-            self.images, self.labels = read_DRIVE_datasets1(self.root, self.mode)            
-        elif self.dataset == 'Cell':
-            self.images, self.labels = read_Cell_datasets(self.root, self.mode)
-        elif self.dataset == 'GAN_Vessel':
-            self.images, self.labels = read_datasets_vessel(self.root, self.mode)
+            self.images, self.labels = read_DRIVE_datasets1(self.root, self.mode)
         else:
-            print('Default dataset is Messidor')
-            self.images, self.labels = read_Messidor_datasets(self.root, self.mode)
+            print('Default dataset is DRIVE')
+            self.images, self.labels = read_DRIVE_datasets(self.root, self.mode)
 
     def __getitem__(self, index):
 

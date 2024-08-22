@@ -5,7 +5,6 @@ from Vessel_Segmentation.train import CMD_Net_Train
 from Vessel_Segmentation.test import CMD_Net_VS_Test
 from Gland_Segmentation.main import train as CMD_Net_GS_Train
 from Gland_Segmentation.main import CMD_Net_GS_Test
-from CRAG.main import crag_train
 from networks.UNet import UNet
 from networks.FCN import FCN
 from networks.FCNsa import FCNsa
@@ -24,21 +23,21 @@ if __name__ == '__main__':
 
     parser = ArgumentParser(description="Evaluation script for CMD-Net models",formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument('--phase', default="train", type=str, help='input phase')
-    parser.add_argument('--input-size', default=192, type=int, help='Images input size')
+    parser.add_argument('--input-size', default=448, type=int, help='Images input size')
     parser.add_argument('--dataset', default="DRIVE", type=str, help='Images input size')
     parser.add_argument('--image-path', default='', type=str, help='DIRVE dataset path')
     parser.add_argument('--model', default='CMDNet_FCNsa', type=str, help='train model')
     parser.add_argument('--save-path', default='outcome/DRIVE', type=str, help='store the trained model')
     parser.add_argument('--alpha', default=0.0001, type=float, help='the empirical coefficient for diversity')
-    parser.add_argument('--epoch', default=300, type=int, help='')
+    parser.add_argument('--epoch', default=54000, type=int, help='')
     parser.add_argument('--batchsize', default=4, type=int, help='Batch per GPU')
     parser.add_argument('--n-channels', default=3, type=int, help='n channels')
     parser.add_argument('--n-classes', default=1, type=int, help='classes')
     parser.add_argument('--lr', default=2e-4, type=float, help='learning rate')
     parser.add_argument('--gpuid', default=0, type=int, help='GPU id')
-    parser.add_argument('--early-stop', default=20, type=int, help=' ')
-    parser.add_argument('--update-lr', default=10, type=int, help=' ')
-    parser.add_argument('--epochloss_init', default=10000, type=int, help=' ')
+    parser.add_argument('--early-stop', default=20, type=int, help='the number of early stop')
+    parser.add_argument('--update-lr', default=10, type=int, help='the number of update learning rate')
+    parser.add_argument('--epochloss_init', default=10000, type=int, help='init epoch loss')
     parser.add_argument('--model-path', default='outcome/DRIVE/CMD-Net_DRIVE.th', type=str, help='store the trained model')
     parser.add_argument('--test-path', default='', type=str, help='store the test image')
     parser.add_argument('--gt-path', default='./dataset/DRIVE/test/1st_manual', type=str, help='store the test label')

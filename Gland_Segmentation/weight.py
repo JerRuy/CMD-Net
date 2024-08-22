@@ -1,8 +1,5 @@
-
 import torch.nn as nn
 import math
-
-
 
 def initialize_weights(self):
     for m in self.modules():
