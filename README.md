@@ -1,10 +1,10 @@
-## __CMDNet__ : CMD Net based on pytorch
-### Introduction
-This project code based on python and pytorch framework, including data preprocessing, model training and testing, visualization, etc. This project is suitable for researchers who study CMD Net.  
+# Constrained Multi-scale Dense Connections for Biomedical Image Segmentation
+## Introduction
+Multi-scale dense connection has been widely used in the biomedical image community to enhance the segmentation performance. In this way, features from all or most scales are aggregated or iteratively fused. However, by analyzing the details, we discover that some connections involving distant scales may not contribute to, or even harm, the performance, while they always introduce a noticeable increase in computational cost. In this paper, we propose constrained multi-scale dense connections (CMDC) for biomedical image segmentation. In contrast to current general lightweight approaches, we first introduce two methods, a naive method and a network architecture search (NAS)-based method, toremove redundant connections and verify the optimal connection configuration, thereby improving overall efficiency and accuracy. The results demonstrate that the two approaches obtain a similar optimal configuration in which most features at the adjacent scales are connected. Then, we applied the optimal configuration to various backbone networks to build constrained multi-scale dense networks (CMD-Net). Experimental results evaluated on eight image segmentation datasets covering biomedical images and natural images demonstrate the effectiveness of CMD-Net across a variety of backbone networks (FCN, U-Net, DeepLabV3, SegNet, FCNsa, ConvUNeXt) with a much lower increase in computational cost. Furthermore, CMD-Net achieves state-of-the-art performance on four publicly available datasets. We believe that the CMDC method can offer valuable insight for ways to engage in dense connectivity at multiple scales within communities.
 ![image](https://github.com/JerRuy/CMD-Net/blob/main/img/pic.png)
 
 
-### Requirements  
+## Prerequisites  
 The main package and version of the python environment are as follows
 ```
 # Name                    Version         
@@ -22,8 +22,7 @@ pillow                    10.4.0
 The above environment is successful when running the code of the project. 
 __It is recommended that you use Linux for training and testing__
 
-## Usage 
-### Project Structure
+## Project Structure 
 
 The project structure are as follows : 
 ```
@@ -153,7 +152,7 @@ Project
 
 ```
 
-### Parameters
+### Usage
 Below is a description of the parameters and their default values:
 
 * --phase: Specifies the phase of operation. Options are train and test. Default is train.
@@ -173,7 +172,7 @@ Below is a description of the parameters and their default values:
 
   
 ### Training model
-To train the model, supported datasets include: CHASEDB, CRAG, DRIVE, and GlaS and supported models include: CMDNet_ConvUNeXt, CMDNet_DeepLab, CMDNet_FCN, CMDNet_FCNsa2, CMDNet_FCNsa, CMDNet_SegNet, CMDNet_UNet, ConvUNeXt, DeepLab, FCN, FCNsa, SegNet, UNet. run command as following :
+To train the model CMDNet_UNet on dataset DRIVE, run command as following :
 
 ```
 python main.py  --phase 'train' \
@@ -182,7 +181,7 @@ python main.py  --phase 'train' \
                 --model 'CMDNet_UNet' \
                 --save-path 'outcome/DRIVE/' \
                 --alpha 0.0001 \
-                --epoch 45000 \
+                --epoch 54000 \
                 --batchsize 4 \
                 --n-channels 3 \
                 --n-classes 1 \
@@ -192,10 +191,11 @@ python main.py  --phase 'train' \
                 --update-lr 10 \
                 --epochloss_init 10000
 ```
-
+* dataset: CHASEDB, CRAG, DRIVE, and GlaS.
+* model:  CMDNet_ConvUNeXt, CMDNet_DeepLab, CMDNet_FCN, CMDNet_FCNsa2, CMDNet_FCNsa, CMDNet_SegNet, CMDNet_UNet, ConvUNeXt, DeepLab, FCN, FCNsa, SegNet, UNet.
 
 ### Testing model
-To test the model, supported datasets include: CHASEDB, CRAG, DRIVE, and GlaS and supported models include: CMDNet_ConvUNeXt, CMDNet_DeepLab, CMDNet_FCN, CMDNet_FCNsa2, CMDNet_FCNsa, CMDNet_SegNet, CMDNet_UNet, ConvUNeXt, DeepLab, FCN, FCNsa, SegNet, UNet. run command as following :
+To test the model CMDNet_UNet on dataset DRIVE. run command as following :
 ```
 python main.py  --phase 'test'  \
                 --dataset 'DRIVE' \
